@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-//import 'package:flutter_privacy_screen/flutter_privacy_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +12,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-
         primarySwatch: Colors.blue,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
@@ -31,32 +29,25 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
-
         title: Text(widget.title),
       ),
       body: Center(
-            child: Column(
-          children: <Widget>[
-            TextButton(
-              child: Text("Enable privacy screen"),
-              onPressed: () async {
-                //await FlutterPrivacyScreen.enablePrivacyScreen();
-              },
-            ),
-            TextButton(
-              child: Text("Disable privacy screen"),
-              onPressed: () async {
-                //await FlutterPrivacyScreen.disablePrivacyScreen();
-              },
-            )
-          ],
-        )),
+          child: Column(
+        children: <Widget>[
+          TextButton(
+            child: Text("Enable privacy screen"),
+            onPressed: () async {},
+          ),
+          TextButton(
+            child: Text("Disable privacy screen"),
+            onPressed: () async {},
+          )
+        ],
+      )),
     );
   }
 }
