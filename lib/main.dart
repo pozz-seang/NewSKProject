@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_privacy_screen/flutter_privacy_screen.dart';
 
 void main() {
