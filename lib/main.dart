@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_privacy_screen/flutter_privacy_screen.dart';
+//import 'package:flutter_privacy_screen/flutter_privacy_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -46,13 +46,13 @@ class _MyHomePageState extends State<MyHomePage> {
             TextButton(
               child: Text("Enable privacy screen"),
               onPressed: () async {
-                await FlutterPrivacyScreen.enablePrivacyScreen();
+                //await FlutterPrivacyScreen.enablePrivacyScreen();
               },
             ),
             TextButton(
               child: Text("Disable privacy screen"),
               onPressed: () async {
-                await FlutterPrivacyScreen.disablePrivacyScreen();
+                //await FlutterPrivacyScreen.disablePrivacyScreen();
               },
             )
           ],
