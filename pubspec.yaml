@@ -31,11 +31,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_native_splash: ^2.2.7
-  flutter_fortune_wheel: ^1.2.0
   rxdart: ^0.27.3
   lottie: ^1.1.0
-  # flutter_spinning_wheel: ^1.1.0
+  flutter_launcher_icons: ^0.10.0
+  flutter_native_splash: ^2.2.7
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -51,6 +50,33 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+
+# flutter_icons:
+#   android: true
+#   ios: true
+#   windows: true
+#   web: true
+#   image_path: "assets/s_logo_bg.png"
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/s_logo_bg.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "assets/s_logo_bg.png"
+    background_color: "#hexcode"
+    theme_color: "#hexcode"
+  windows:
+    generate: true
+    image_path: "assets/s_logo_bg.png"
+    icon_size: 48 # min:48, max:256, default: 48
+    
+flutter_native_splash:
+  color: "#080E28"
+  # background_image: "assets/bg.png"
+  image: "assets/s_logo.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
