@@ -34,6 +34,7 @@ dependencies:
   flutter_native_splash: ^2.2.7
   flutter_fortune_wheel: ^1.2.0
   rxdart: ^0.27.3
+  lottie: ^1.1.0
   # flutter_spinning_wheel: ^1.1.0
 
   # The following adds the Cupertino Icons font to your application.
@@ -66,6 +67,8 @@ flutter:
   assets:
     - assets/roulette-8-300.png
     - assets/roulette-center-300.png
+    - assets/customer.json
+    - assets/s_logo.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

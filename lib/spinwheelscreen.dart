@@ -13,7 +13,7 @@ class _SpinWheelState extends State<SpinWheel> {
   final selected = BehaviorSubject<int>();
   int rewards = 0;
 
-  List<int> items = [100, 200, 500, 1000, 2000, 3000];
+  List<int> items = [100, 200, 100, 500, 100, 1000, 100, 2000, 100, 3000];
 
 
   @override
@@ -24,7 +24,11 @@ class _SpinWheelState extends State<SpinWheel> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: Color.fromARGB(255, 140, 0, 255),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Spin"),
+        backgroundColor: Color.fromARGB(255, 0, 162, 255),
+      ),
       body: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -47,7 +51,7 @@ class _SpinWheelState extends State<SpinWheel> {
                   print(rewards);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      backgroundColor: Colors.red,
+                      backgroundColor: Color.fromARGB(255, 0, 162, 255),
                       content: Text(
                           "អ្នកទើបតែឈ្នះ " + rewards.toString() + " ពិន្ទុ!"),
                     ),
@@ -67,7 +71,7 @@ class _SpinWheelState extends State<SpinWheel> {
               child: Container(
                 height: 40,
                 width: 120,
-                color: Colors.redAccent,
+                color: Color.fromARGB(255, 0, 162, 255),
                 child: Center(
                   child: Text(
                     "បង្វិល",
