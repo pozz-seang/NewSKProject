@@ -25,7 +25,6 @@ class MyApp extends StatelessWidget {
     FlutterNativeSplash.remove();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),

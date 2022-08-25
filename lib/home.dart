@@ -20,9 +20,11 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Home Menu",
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        title: Center(
+          child: Text(
+            "Home Menu",
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          ),
         ),
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.red),
