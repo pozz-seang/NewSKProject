@@ -1,6 +1,5 @@
 // ignore_for_file: deprecated_member_use, unnecessary_import, unused_import
 import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
