@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'home.dart';
+import 'item/itemHome.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -96,81 +97,77 @@ class _FBaseState extends State<FBase> {
         ),
         backgroundColor: Color.fromARGB(255, 255, 0, 0),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(
-              height: 20,
-            ),
-            FirebaseAnimatedList(
-                query: _dbref,
-                shrinkWrap: true,
-                itemBuilder: (context, snapshot, animation, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                                actions: [
-                                  TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text("YES")),
-                                  TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text("CLOSE"))
-                                ],
-                                title: Text(
-                                  snapshot.value.toString(),
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.normal),
-                                ),
-                                content: Text(
-                                  snapshot.value.toString(),
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.normal),
-                                ),
-                              ));
-                    },
-                    child: Container(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ListTile(
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                              color: Color.fromARGB(255, 255, 255, 255),
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          tileColor: Color.fromARGB(255, 255, 0, 0),
-                          trailing: IconButton(
-                            icon: Icon(
-                              Icons.delete,
-                              color: Color.fromARGB(255, 255, 255, 255),
-                            ),
-                            onPressed: () {
-                              _dbref.child(snapshot.key!).remove();
-                            },
-                          ),
+      body: FirebaseAnimatedList(
+          padding: EdgeInsets.all(10),
+          query: _dbref,
+          shrinkWrap: false,
+          itemBuilder: (context, snapshot, animation, index) {
+            return GestureDetector(
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                          actions: [
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text("YES")),
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text("CLOSE"))
+                          ],
                           title: Text(
                             snapshot.value.toString(),
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
+                            style: TextStyle(fontWeight: FontWeight.normal),
                           ),
-                        ),
+                          content: Text(
+                            snapshot.value.toString(),
+                            style: TextStyle(fontWeight: FontWeight.normal),
+                          ),
+                        ));
+              },
+              child: Container(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ListTile(
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(
+                        color: Color.fromARGB(255, 255, 255, 255),
                       ),
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                  );
-                }),
-          ],
-        ),
-      ),
+                    tileColor: Color.fromARGB(255, 255, 0, 0),
+                    trailing: IconButton(
+                      icon: Icon(
+                        Icons.delete,
+                        color: Color.fromARGB(255, 255, 255, 255),
+                      ),
+                      onPressed: () {
+                        _dbref.child(snapshot.key!).remove();
+                      },
+                    ),
+                    title: Text(
+                      "Name : "+snapshot.value["name"].toString(),
+                      style: TextStyle(
+                          fontSize: 20, 
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                    subtitle: Text(
+                      "Amount : "+snapshot.value["value"].toString()+" ៛",
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }),
     );
   }
 

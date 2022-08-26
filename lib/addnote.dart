@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'main.dart';
 
 class addnote extends StatelessWidget {
-  TextEditingController title = TextEditingController();
+  TextEditingController name = TextEditingController();
+  TextEditingController value = TextEditingController();
 
   final fb = FirebaseDatabase.instance;
 
@@ -26,11 +27,21 @@ class addnote extends StatelessWidget {
             Container(
               padding: EdgeInsets.only(right: 5, left: 5),
               decoration: BoxDecoration(border: Border.all()),
-              child: TextField(
-                controller: title,
-                decoration: InputDecoration(
-                  hintText: 'title',
-                ),
+              child: Column(
+                children: [
+                  TextField(
+                    controller: name,
+                    decoration: InputDecoration(
+                      hintText: 'Name',
+                    ),
+                  ),
+                  TextField(
+                    controller: value,
+                    decoration: InputDecoration(
+                      hintText: 'Value',
+                    ),
+                  ),
+                ],
               ),
             ),
             SizedBox(
@@ -41,12 +52,10 @@ class addnote extends StatelessWidget {
               onPressed: () {
                 ref
                     .push()
-                    .set(
-                      title.text,
+                    .set({"name": name.text, "value": value.text}
                     )
                     .asStream();
-                Navigator.pushReplacement(
-                    context, MaterialPageRoute(builder: (_) => FBase()));
+                Navigator.pop(context,true);
               },
               child: Text(
                 "save",
