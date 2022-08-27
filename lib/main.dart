@@ -11,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'home.dart';
 import 'item/itemHome.dart';
+import 'movie.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: FBase(), //HomePage()
+      home: FBase(), //HomePage() FBase()
     );
   }
 }
@@ -58,6 +59,7 @@ class _FBaseState extends State<FBase> {
   var newAge = "";
   var newAge2 = "";
   var status = "";
+
 
   @override
   void initState() {
@@ -97,77 +99,53 @@ class _FBaseState extends State<FBase> {
         ),
         backgroundColor: Color.fromARGB(255, 255, 0, 0),
       ),
-      body: FirebaseAnimatedList(
-          padding: EdgeInsets.all(10),
-          query: _dbref,
-          shrinkWrap: false,
-          itemBuilder: (context, snapshot, animation, index) {
-            return GestureDetector(
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                          actions: [
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text("YES")),
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text("CLOSE"))
-                          ],
-                          title: Text(
-                            snapshot.value.toString(),
-                            style: TextStyle(fontWeight: FontWeight.normal),
+      body: Column(children: <Widget>[
+
+        Flexible(
+          child: FirebaseAnimatedList(
+              padding: EdgeInsets.all(10),
+              query: _dbref,
+              shrinkWrap: false,
+              itemBuilder: (context, snapshot, animation, index) {
+                return GestureDetector(
+                  onTap: () {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        backgroundColor: Color.fromARGB(255, 255, 0, 0),
+                        content: buildText("Name : "+snapshot.value["name"].toString()+"\n"+"Amount : "+snapshot.value["value"].toString()+" ៛")));
+                  },
+                  
+                  child: Container(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                            color: Color.fromARGB(255, 255, 255, 255),
                           ),
-                          content: Text(
-                            snapshot.value.toString(),
-                            style: TextStyle(fontWeight: FontWeight.normal),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        tileColor: Color.fromARGB(255, 255, 0, 0),
+                        trailing: IconButton(
+                          icon: Icon(
+                            Icons.delete,
+                            color: Color.fromARGB(255, 255, 255, 255),
                           ),
-                        ));
-              },
-              child: Container(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ListTile(
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                        color: Color.fromARGB(255, 255, 255, 255),
+                          onPressed: () {
+                            _dbref.child(snapshot.key!).remove();
+                          },
+                        ),
+                        title: buildText(
+                            "Name : " + snapshot.value["name"].toString()),
+                        subtitle: buildText("Amount : " +
+                            snapshot.value["value"].toString() +
+                            " ៛"),
                       ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    tileColor: Color.fromARGB(255, 255, 0, 0),
-                    trailing: IconButton(
-                      icon: Icon(
-                        Icons.delete,
-                        color: Color.fromARGB(255, 255, 255, 255),
-                      ),
-                      onPressed: () {
-                        _dbref.child(snapshot.key!).remove();
-                      },
-                    ),
-                    title: Text(
-                      "Name : "+snapshot.value["name"].toString(),
-                      style: TextStyle(
-                          fontSize: 20, 
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
-                    subtitle: Text(
-                      "Amount : "+snapshot.value["value"].toString()+" ៛",
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
                     ),
                   ),
-                ),
-              ),
-            );
-          }),
+                );
+              }),
+        ),
+      ]),
     );
   }
 
@@ -175,9 +153,7 @@ class _FBaseState extends State<FBase> {
     return Text(
       text,
       style: const TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-      ),
+          fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
     );
   }
 

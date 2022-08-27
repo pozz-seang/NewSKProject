@@ -93,10 +93,10 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/roulette-8-300.png
-    - assets/roulette-center-300.png
     - assets/customer.json
     - assets/s_logo.png
+    - assets/s_logo_bg.png
+    - assets/a.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
