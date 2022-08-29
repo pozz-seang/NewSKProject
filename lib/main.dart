@@ -4,6 +4,8 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
+import 'package:newskproject/loadingScreen.dart';
+import 'package:newskproject/storedata.dart';
 import 'addnote.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +20,7 @@ void main() async {
   // No rotate
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  initialization();
+  //initialization();
   // firebase
   FirebaseApp app = await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -27,10 +29,10 @@ void main() async {
   runApp(const MyApp());
 }
 
-void initialization() async {
-  await Future.delayed(const Duration(seconds: 3));
-  FlutterNativeSplash.remove();
-}
+// void initialization() async {
+//   await Future.delayed(const Duration(seconds: 3));
+//   FlutterNativeSplash.remove();
+// }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -42,7 +44,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: FBase(), //HomePage() FBase()
+      home: SData(), //HomePage() FBase() ABS()
     );
   }
 }
@@ -60,7 +62,6 @@ class _FBaseState extends State<FBase> {
   var newAge2 = "";
   var status = "";
 
-
   @override
   void initState() {
     super.initState();
@@ -77,7 +78,7 @@ class _FBaseState extends State<FBase> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Color.fromARGB(255, 255, 0, 0),
+        backgroundColor: Color(0xffCC941F),
         onPressed: () {
           Navigator.push(
             context,
@@ -97,10 +98,13 @@ class _FBaseState extends State<FBase> {
             fontSize: 25,
           ),
         ),
-        backgroundColor: Color.fromARGB(255, 255, 0, 0),
+        flexibleSpace: Image(
+          image: AssetImage('assets/a.png'),
+          fit: BoxFit.cover,
+        ),
+        backgroundColor: Color(0xffCC941F),
       ),
       body: Column(children: <Widget>[
-
         Flexible(
           child: FirebaseAnimatedList(
               padding: EdgeInsets.all(10),
@@ -110,10 +114,14 @@ class _FBaseState extends State<FBase> {
                 return GestureDetector(
                   onTap: () {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        backgroundColor: Color.fromARGB(255, 255, 0, 0),
-                        content: buildText("Name : "+snapshot.value["name"].toString()+"\n"+"Amount : "+snapshot.value["value"].toString()+" ៛")));
+                        backgroundColor: Color(0xffCC941F),
+                        content: buildText("Name : " +
+                            snapshot.value["name"].toString() +
+                            "\n" +
+                            "Amount : " +
+                            snapshot.value["value"].toString() +
+                            " ៛")));
                   },
-                  
                   child: Container(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -124,7 +132,7 @@ class _FBaseState extends State<FBase> {
                           ),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        tileColor: Color.fromARGB(255, 255, 0, 0),
+                        tileColor: Color(0xffCC941F),
                         trailing: IconButton(
                           icon: Icon(
                             Icons.delete,

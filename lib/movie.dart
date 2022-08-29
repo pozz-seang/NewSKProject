@@ -3,8 +3,11 @@ import 'dart:math';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:newskproject/main.dart';
+import 'package:newskproject/storedata.dart';
 
 class ABS extends StatefulWidget {
   const ABS({super.key});
@@ -20,6 +23,8 @@ class _ABSState extends State<ABS> {
   @override
   void initState() {
     super.initState();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
     _dbref = FirebaseDatabase.instance.reference().child("h");
     readData();
   }
@@ -27,19 +32,19 @@ class _ABSState extends State<ABS> {
   void readData() {
     _dbref.onValue.listen((Event event) {
       setState(() {
-
-        _dbref.once().then((DataSnapshot dataSnapshot) {
-          var data = dataSnapshot.value;
-          list = [];
-          list.clear;
-          data.forEach((key, value) {
-            Model model =
-                new Model(name: value['title'], value: value['url'], key: key);
-            list.add(model);
-          });
-          setState(() {});
-        });
-
+        _dbref.once().then(
+          (DataSnapshot dataSnapshot) {
+            var data = dataSnapshot.value;
+            list = [];
+            list.clear;
+            data.forEach((key, value) {
+              Model model = new Model(
+                  name: value['title'], value: value['url'], key: key);
+              list.add(model);
+            });
+            setState(() {});
+          },
+        );
       });
     });
   }
@@ -53,38 +58,29 @@ class _ABSState extends State<ABS> {
         child: Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15), color: Colors.red),
-          child: Column(
-            children: [
-              Stack(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(15),
-                      topRight: Radius.circular(15),
-                    ),
-                    child: Image.asset(
-                      "assets/s_logo_bg.png",
-                      width: double.infinity,
-                      height: 190,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(15),
-                      topRight: Radius.circular(15),
-                    ),
-                    child: Image.network(
-                      value,
-                      width: double.infinity,
-                      height: 190,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ],
+          child: Column(children: [
+            ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15),
+                topRight: Radius.circular(15),
               ),
-            ],
-          ),
+              child: Stack(children: [
+                Image.asset(
+                  "assets/s_logo_bg.png",
+                  width: double.infinity,
+                  height: 190,
+                  fit: BoxFit.cover,
+                ),
+                Image.network(
+                  value,
+                  width: double.infinity,
+                  height: 190,
+                  fit: BoxFit.cover,
+                ),
+              ]),
+            ),
+            Text(name,style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),)
+          ]),
         ),
       );
     }
@@ -96,6 +92,21 @@ class _ABSState extends State<ABS> {
           image: AssetImage('assets/a.png'),
           fit: BoxFit.cover,
         ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => FBase()),
+              );
+            },
+            child: Text(
+              "GET DATA",
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
       ),
       body: Container(
         child: GridView.builder(

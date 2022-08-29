@@ -15,7 +15,11 @@ class addnote extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Add Todos"),
-        backgroundColor: Color.fromARGB(255, 255, 0, 0),
+        flexibleSpace: Image(
+          image: AssetImage('assets/a.png'),
+          fit: BoxFit.cover,
+        ),
+        backgroundColor: Color(0xffCC941F),
       ),
       body: Container(
         padding: EdgeInsets.only(right: 20, left: 20),
@@ -48,7 +52,7 @@ class addnote extends StatelessWidget {
               height: 10,
             ),
             MaterialButton(
-              color: Color.fromARGB(255, 255, 0, 0),
+              color: Color(0xffCC941F),
               onPressed: () {
                 ref
                     .push()
