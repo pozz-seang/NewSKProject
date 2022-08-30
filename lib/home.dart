@@ -42,7 +42,7 @@ class _HomeState extends State<Home> {
           image: AssetImage('assets/a.png'),
           fit: BoxFit.cover,
         ),
-        backgroundColor: Color.fromARGB(0, 255, 255, 255), //BackG AppBar
+        backgroundColor: Color(0xffCC941F), //BackG AppBar
         actions: [
           TextButton(
             onPressed: () {

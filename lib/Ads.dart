@@ -25,7 +25,7 @@ class _showAdsState extends State<showAds> {
   }
 
   void ads() async {
-    await Future.delayed(const Duration(seconds: 3));
+    // await Future.delayed(const Duration(seconds: 3));
     while (skip > 0) {
       setState(() {
         skip--;
