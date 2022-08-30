@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.red,
+        primarySwatch: Colors.orange,
         appBarTheme: AppBarTheme(
           systemOverlayStyle: SystemUiOverlayStyle.light, // 2
         ),
