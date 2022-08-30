@@ -28,7 +28,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   void _playVideo() async {
     _controller.play();
-    await Future.delayed(Duration(seconds: 4));
+    await Future.delayed(Duration(seconds: 3));
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => SData()),
@@ -44,14 +44,21 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: _controller.value.isInitialized
-            ? AspectRatio(
-                aspectRatio: _controller.value.aspectRatio,
-                child: VideoPlayer(
-                  _controller,
-                ),
-              )
-            : Container());
+    return Container(
+      height: double.infinity,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Color(0xff0B0C28),
+      ),
+      child: Center(
+        child: Container(
+          height: 130,
+          width: 130,
+          child: VideoPlayer(
+            _controller,
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -25,6 +25,10 @@ void main() async {
   FirebaseApp app = await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  //Test no bar
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: Color(0xffffff),
+  ));
   // main app
   runApp(const MyApp());
 }
@@ -43,8 +47,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.red,
+        appBarTheme: AppBarTheme(
+          systemOverlayStyle: SystemUiOverlayStyle.light, // 2
+        ),
       ),
-      home: SData(), //HomePage() FBase() ABS()
+      home: LoadingScreen(), //HomePage() FBase() ABS()
     );
   }
 }

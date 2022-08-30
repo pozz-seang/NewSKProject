@@ -80,7 +80,7 @@ flutter_icons:
     icon_size: 48 # min:48, max:256, default: 48
     
 flutter_native_splash:
-  color: "#080E28"
+  color: "#0B0C28"
   # background_image: "assets/bg.png"
   image: "assets/s_logo.png"
 
