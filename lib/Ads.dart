@@ -3,25 +3,24 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:newskproject/movie.dart';
+import 'package:newskproject/home.dart';
 import 'package:path_provider/path_provider.dart';
 
-class SData extends StatefulWidget {
-  const SData({super.key});
+class showAds extends StatefulWidget {
+  const showAds({super.key});
 
   @override
-  State<SData> createState() => _SDataState();
+  State<showAds> createState() => _showAdsState();
 }
 
-class _SDataState extends State<SData> {
+class _showAdsState extends State<showAds> {
   var skip = 5;
   bool op = true;
 
   @override
   void initState() {
     super.initState();
-    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-    //     overlays: [SystemUiOverlay.bottom]);
+
     ads();
   }
 
@@ -37,7 +36,7 @@ class _SDataState extends State<SData> {
     if (op) {
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => ABS()),
+        MaterialPageRoute(builder: (context) => Home()),
         (Route<dynamic> route) => false,
       );
     }

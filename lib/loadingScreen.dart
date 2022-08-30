@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:newskproject/storedata.dart';
+import 'package:newskproject/Ads.dart';
 import 'package:video_player/video_player.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 
@@ -31,7 +31,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     await Future.delayed(Duration(seconds: 3));
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => SData()),
+      MaterialPageRoute(builder: (context) => showAds()),
       (Route<dynamic> route) => false,
     );
   }
