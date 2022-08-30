@@ -18,15 +18,16 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   void initState() {
     super.initState();
+
+    _playVideo();
+  }
+
+  void _playVideo() async {
     _controller = VideoPlayerController.asset("assets/loading.mp4")
       ..initialize().then((value) {
         setState(() {});
       })
       ..setVolume(0);
-    _playVideo();
-  }
-
-  void _playVideo() async {
     _controller.play();
     await Future.delayed(Duration(seconds: 3));
     Navigator.pushAndRemoveUntil(
@@ -52,8 +53,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
       ),
       child: Center(
         child: Container(
-          height: 150,
-          width: 150,
+          height: 160,
+          width: 160,
           child: VideoPlayer(
             _controller,
           ),

@@ -46,8 +46,9 @@ class _HomeState extends State<Home> {
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => dataUser()));
+              // Navigator.of(context)
+              //     .push(MaterialPageRoute(builder: (context) => dataUser()));
+              Navigator.push(context, SizeTransition5(dataUser()));
             },
             child: Text("GET DATA",
                 style: TextStyle(
@@ -132,4 +133,30 @@ class _HomeState extends State<Home> {
 class Model {
   String name, value, key;
   Model({required this.name, required this.value, required this.key});
+}
+
+class SizeTransition5 extends PageRouteBuilder {
+  final Widget page;
+
+  SizeTransition5(this.page)
+      : super(
+          pageBuilder: (context, animation, anotherAnimation) => page,
+          transitionDuration: Duration(milliseconds: 1500),
+          reverseTransitionDuration: Duration(milliseconds: 500),
+          transitionsBuilder: (context, animation, anotherAnimation, child) {
+            animation = CurvedAnimation(
+                curve: Curves.fastLinearToSlowEaseIn,
+                parent: animation,
+                reverseCurve: Curves.fastOutSlowIn);
+            return Align(
+              alignment: Alignment.centerRight,
+              child: SizeTransition(
+                axis: Axis.horizontal,
+                sizeFactor: animation,
+                child: page,
+                axisAlignment: 0,
+              ),
+            );
+          },
+        );
 }
