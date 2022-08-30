@@ -88,6 +88,7 @@ class _ABSState extends State<ABS> {
     // Text(name), Text(value),
     return Scaffold(
       appBar: AppBar(
+        title: Text("HOME"),
         flexibleSpace: Image(
           image: AssetImage('assets/a.png'),
           fit: BoxFit.cover,

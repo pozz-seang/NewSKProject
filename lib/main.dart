@@ -46,10 +46,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.orange,
+        primarySwatch: Colors.red,
         appBarTheme: AppBarTheme(
-          systemOverlayStyle: SystemUiOverlayStyle.light, // 2
-        ),
+            backwardsCompatibility: false, // 1
+            systemOverlayStyle: SystemUiOverlayStyle.light),
       ),
       home: LoadingScreen(), //HomePage() FBase() ABS()
     );

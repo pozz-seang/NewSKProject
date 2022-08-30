@@ -52,8 +52,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
       ),
       child: Center(
         child: Container(
-          height: 130,
-          width: 130,
+          height: 150,
+          width: 150,
           child: VideoPlayer(
             _controller,
           ),
