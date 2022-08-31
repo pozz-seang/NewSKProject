@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, unnecessary_import
+// ignore_for_file: unused_import, unnecessary_import, unused_field
 import 'dart:math';
 
 import 'package:firebase_database/firebase_database.dart';
@@ -6,10 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:newskproject/config/OpenNewScreenAnimation.dart';
 import 'package:newskproject/main.dart';
 import 'package:newskproject/Ads.dart';
 import 'package:newskproject/userList.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:video_player/video_player.dart';
+
+import 'config/firebase_options.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -26,9 +30,11 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
     _dbref = FirebaseDatabase.instance.reference().child("h");
+
     readData();
   }
 
@@ -46,9 +52,7 @@ class _HomeState extends State<Home> {
         actions: [
           TextButton(
             onPressed: () {
-              // Navigator.of(context)
-              //     .push(MaterialPageRoute(builder: (context) => dataUser()));
-              Navigator.push(context, SizeTransition5(dataUser()));
+              Navigator.of(context).push(OpenScreen(dataUser()));
             },
             child: Text("GET DATA",
                 style: TextStyle(
@@ -70,46 +74,64 @@ class _HomeState extends State<Home> {
           itemCount: list.length,
           itemBuilder: (_, index) {
             final item = list[index];
-            return UI(item.name, item.value, item.key);
+            return UI(item.name, item.value, item.key, item.p);
           },
         ),
       ),
     );
   }
 
-  Scaffold get Test => Scaffold();
-
-  Widget UI(String name, String value, String key) {
-    return GestureDetector(
-      onLongPress: () {},
-      onTap: () {},
-      child: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15), color: Colors.red),
-        child: Column(children: [
-          ClipRRect(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(15),
-              topRight: Radius.circular(15),
+  Widget UI(String name, String value, String key, bool p) {
+    if ((p == true)) {
+      return GestureDetector(
+            onLongPress: () {},
+            onTap: () {},
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Color(0xffCC941F)),
+              child: Column(children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(15),
+                    topRight: Radius.circular(15),
+                  ),
+                  child: Stack(children: [
+                    Image.asset("assets/s_logo_item.png",
+                        width: double.infinity, height: 190, fit: BoxFit.cover),
+                    Image.network(value,
+                        width: double.infinity, height: 190, fit: BoxFit.cover)
+                  ]),
+                ),
+                Text(name,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold))
+              ]),
             ),
-            child: Stack(children: [
-              Image.asset("assets/s_logo_item.png",
-                  width: double.infinity, height: 190, fit: BoxFit.cover),
-              Image.network(value,
-                  width: double.infinity, height: 190, fit: BoxFit.cover)
-            ]),
-          ),
-          Text(name,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold))
-        ]),
-      ),
-    );
+          );
+    } else {
+      return Shimmer.fromColors(
+            baseColor: Color.fromARGB(255, 221, 221, 221),
+            highlightColor: Color.fromARGB(255, 248, 248, 248),
+            child: GestureDetector(
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: Color(0xffCC941F)),
+              ),
+            ),
+          );
+    }
   }
 
   void readData() {
+    list = [];
+    for (var i = 0; i < 6; i++) {
+      Model model = Model(name: "null", value: "null", key: "null", p: false);
+      list.add(model);
+    }
     _dbref.onValue.listen((Event event) {
       setState(() {
         _dbref.once().then(
@@ -118,9 +140,10 @@ class _HomeState extends State<Home> {
             list = [];
             list.clear;
             data.forEach((key, value) {
-              Model model =
-                  Model(name: value['title'], value: value['url'], key: key);
+              Model model = Model(
+                  name: value['title'], value: value['url'], key: key, p: true);
               list.add(model);
+              print(model);
             });
             setState(() {});
           },
@@ -128,35 +151,4 @@ class _HomeState extends State<Home> {
       });
     });
   }
-}
-
-class Model {
-  String name, value, key;
-  Model({required this.name, required this.value, required this.key});
-}
-
-class SizeTransition5 extends PageRouteBuilder {
-  final Widget page;
-
-  SizeTransition5(this.page)
-      : super(
-          pageBuilder: (context, animation, anotherAnimation) => page,
-          transitionDuration: Duration(milliseconds: 1500),
-          reverseTransitionDuration: Duration(milliseconds: 500),
-          transitionsBuilder: (context, animation, anotherAnimation, child) {
-            animation = CurvedAnimation(
-                curve: Curves.fastLinearToSlowEaseIn,
-                parent: animation,
-                reverseCurve: Curves.fastOutSlowIn);
-            return Align(
-              alignment: Alignment.centerRight,
-              child: SizeTransition(
-                axis: Axis.horizontal,
-                sizeFactor: animation,
-                child: page,
-                axisAlignment: 0,
-              ),
-            );
-          },
-        );
 }

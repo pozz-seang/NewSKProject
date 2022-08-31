@@ -7,7 +7,7 @@ import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:newskproject/loadingScreen.dart';
 import 'package:newskproject/Ads.dart';
 import 'addnote.dart';
-import 'firebase_options.dart';
+import 'config/firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -40,12 +40,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.red,
         appBarTheme: AppBarTheme(
             backwardsCompatibility: false, // 1
             systemOverlayStyle: SystemUiOverlayStyle.light),
       ),
-      home: LoadingScreen(),
+      home: Home(),//LoadingScreen()
     );
   }
 }

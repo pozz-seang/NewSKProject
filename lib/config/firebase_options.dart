@@ -2,7 +2,7 @@
 // ignore_for_file: lines_longer_than_80_chars, avoid_classes_with_only_static_members
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
-    show defaultTargetPlatform, kIsWeb, TargetPlatform;
+    show defaultTargetPlatform, TargetPlatform;
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -16,34 +16,17 @@ import 'package:flutter/foundation.dart'
 /// ```
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
-    if (kIsWeb) {
-      return web;
-    }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
         return ios;
-      case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
       default:
         throw UnsupportedError(
           'DefaultFirebaseOptions are not supported for this platform.',
         );
     }
   }
-
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyC3gGP98HUVv7tL5JNGktAQqs-TwWHE8Y8',
-    appId: '1:452891495600:web:86fe81fb12c8de5134bf75',
-    messagingSenderId: '452891495600',
-    projectId: 'flutter-9d221',
-    authDomain: 'flutter-9d221.firebaseapp.com',
-    storageBucket: 'flutter-9d221.appspot.com',
-  );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyB7f-uyKlwGcwM4KkK0OgR-Cb72h1PynHk',
@@ -59,8 +42,14 @@ class DefaultFirebaseOptions {
     messagingSenderId: '452891495600',
     projectId: 'flutter-9d221',
     storageBucket: 'flutter-9d221.appspot.com',
-    iosClientId: '452891495600-bbahs8q3hsiqvpa5d9dhnlkpc3g92u6p.apps.googleusercontent.com',
+    iosClientId:
+        '452891495600-bbahs8q3hsiqvpa5d9dhnlkpc3g92u6p.apps.googleusercontent.com',
     iosBundleId: 'com.example.newskproject',
   );
+}
 
+class Model {
+  String name, value, key;
+  bool p;
+  Model({required this.name, required this.value, required this.key, required this.p});
 }

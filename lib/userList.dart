@@ -3,6 +3,8 @@ import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:newskproject/addnote.dart';
 
+import 'config/OpenNewScreenAnimation.dart';
+
 class dataUser extends StatefulWidget {
   const dataUser({super.key});
   @override
@@ -34,12 +36,7 @@ class _dataUserState extends State<dataUser> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xffCC941F),
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => addnote(),
-            ),
-          );
+          Navigator.of(context).push(OpenScreen(addnote()));
         },
         child: Icon(
           Icons.add,
