@@ -49,3 +49,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
+
+// https://raw.githubusercontent.com/pozz-seang/NewSKProject/main/data.json

@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, unnecessary_import, unused_field
+// ignore_for_file: unused_import, unnecessary_import, unused_field, unused_element
 
 import 'dart:io';
 import 'dart:async';
@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:newskproject/home.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class showAds extends StatefulWidget {
   const showAds({super.key});
@@ -27,61 +28,65 @@ class _showAdsState extends State<showAds> {
   void initState() {
     super.initState();
     GetAds();
-
-
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(children: [
-        Container(
+      body: InkWell(
+        onTap: () {
+          _launchUrl("https://sehacker168.blogspot.com/");
+        },
+        child: Stack(children: [
+          Container(
+              height: double.infinity,
+              width: double.infinity,
+              child: Shimmer.fromColors(
+                baseColor: Color.fromARGB(255, 197, 197, 197),
+                highlightColor: Color.fromARGB(255, 248, 248, 248),
+                child: GestureDetector(
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: Color(0xffCC941F)),
+                  ),
+                ),
+              )),
+          Container(
             height: double.infinity,
             width: double.infinity,
-            child: Shimmer.fromColors(
-              baseColor: Color.fromARGB(255, 197, 197, 197),
-              highlightColor: Color.fromARGB(255, 248, 248, 248),
-              child: GestureDetector(
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Color(0xffCC941F)),
-                ),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image:
+                    // AssetImage('assets/b.png'),
+                    NetworkImage(imgAds),
+                    
+                // Image.file(await getImageFileFromAssets('images/myImage.jpg')),
+                fit: BoxFit.cover,
               ),
-            )),
-        Container(
-          height: double.infinity,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image:
-                  // AssetImage('assets/b.png'),
-                  NetworkImage(imgAds),
-                  // Image.file(await getImageFileFromAssets('images/myImage.jpg')),
-              fit: BoxFit.cover,
+            ),
+            child: Stack(
+              children: [
+                Positioned(
+                  top: 30,
+                  right: 30,
+                  child: ElevatedButton(
+                    child: Text(skip.toString() + " Skip",
+                        style: TextStyle(color: Colors.white, fontSize: 16)),
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.black),
+                    ),
+                    onPressed: () {
+                      skip = 0;
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
-          child: Stack(
-            children: [
-              Positioned(
-                top: 30,
-                right: 30,
-                child: ElevatedButton(
-                  child: Text(skip.toString() + " Skip",
-                      style: TextStyle(color: Colors.white, fontSize: 16)),
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.black),
-                  ),
-                  onPressed: () {
-                    skip = 0;
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      ]),
+        ]),
+      ),
     );
   }
 
@@ -91,7 +96,6 @@ class _showAdsState extends State<showAds> {
       setState(() {
         imgAds = dataSnapshot.value.toString();
         ads();
-        // downloadFile(dataSnapshot.value.toString());
       });
     });
   }
@@ -111,15 +115,16 @@ class _showAdsState extends State<showAds> {
     );
   }
 
-  Future downloadFile(String urls) async {
-    final tempDir = await getTemporaryDirectory();
-    final path = tempDir.path + "/a.png";
-    await Dio().download(urls, path);
-
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Done")));
+  Future<void> _launchUrl(String urlString) async {
+    if (await canLaunch(urlString)) {
+      await launch(
+        urlString,
+        forceWebView: true,
+        forceSafariVC: true,
+        enableDomStorage: true,
+      );
+    }
   }
-
 
   Future<File> getImageFileFromAssets(String path) async {
     final byteData = await rootBundle.load('assets/$path');

@@ -27,7 +27,6 @@ class _HomeState extends State<Home> {
   List<Model> list = [];
   late VideoPlayerController _controller;
 
-
   @override
   void initState() {
     super.initState();
@@ -62,21 +61,26 @@ class _HomeState extends State<Home> {
         ],
       ),
       body: Container(
-        child: GridView.builder(
-          padding: EdgeInsets.all(20),
-          shrinkWrap: false,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 2,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            mainAxisExtent: 250,
-          ),
-          itemCount: list.length,
-          itemBuilder: (_, index) {
-            final item = list[index];
-            return UI(item.name, item.value, item.key, item.p);
+        child: RefreshIndicator(
+          onRefresh: () async {
+            readData();
           },
+          child: GridView.builder(
+            padding: EdgeInsets.all(20),
+            shrinkWrap: false,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 2,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              mainAxisExtent: 250,
+            ),
+            itemCount: list.length,
+            itemBuilder: (_, index) {
+              final item = list[index];
+              return UI(item.name, item.value, item.key, item.p);
+            },
+          ),
         ),
       ),
     );
@@ -85,45 +89,52 @@ class _HomeState extends State<Home> {
   Widget UI(String name, String value, String key, bool p) {
     if ((p == true)) {
       return GestureDetector(
-            onLongPress: () {},
-            onTap: () {},
-            child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: Color(0xffCC941F)),
-              child: Column(children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(15),
-                    topRight: Radius.circular(15),
-                  ),
-                  child: Stack(children: [
-                    Image.asset("assets/s_logo_item.png",
-                        width: double.infinity, height: 190, fit: BoxFit.cover),
-                    Image.network(value,
-                        width: double.infinity, height: 190, fit: BoxFit.cover)
-                  ]),
+        onLongPress: () {},
+        onTap: () {},
+        child: Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: Color(0xffCC941F)),
+          child: Column(children: [
+            ClipRRect(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(15),
+                  topRight: Radius.circular(15),
                 ),
-                Text(name,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold))
-              ]),
-            ),
-          );
+                child: FadeInImage(
+                  width: double.infinity,
+                  height: 190,
+                  fit: BoxFit.cover,
+                  placeholder: AssetImage("assets/s_logo_item.png"),
+                  image: NetworkImage(value),
+                )
+                // Stack(children: [
+                //   Image.asset("assets/s_logo_item.png",
+                //       width: double.infinity, height: 190, fit: BoxFit.cover),
+                //   Image.network(value,
+                //       width: double.infinity, height: 190, fit: BoxFit.cover)
+                // ]),
+                ),
+            Text(name,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold))
+          ]),
+        ),
+      );
     } else {
       return Shimmer.fromColors(
-            baseColor: Color.fromARGB(255, 221, 221, 221),
-            highlightColor: Color.fromARGB(255, 248, 248, 248),
-            child: GestureDetector(
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Color(0xffCC941F)),
-              ),
-            ),
-          );
+        baseColor: Color.fromARGB(255, 221, 221, 221),
+        highlightColor: Color.fromARGB(255, 248, 248, 248),
+        child: GestureDetector(
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Color(0xffCC941F)),
+          ),
+        ),
+      );
     }
   }
 
@@ -133,6 +144,7 @@ class _HomeState extends State<Home> {
       Model model = Model(name: "null", value: "null", key: "null", p: false);
       list.add(model);
     }
+
     _dbref.onValue.listen((Event event) {
       setState(() {
         _dbref.once().then(

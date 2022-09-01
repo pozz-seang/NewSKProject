@@ -1,5 +1,5 @@
 @echo off
-mode con cols=60 lines=3
+mode con cols=60 lines=2
 color 06
 title Build APK
 
