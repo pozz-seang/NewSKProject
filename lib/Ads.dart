@@ -1,10 +1,15 @@
-import 'dart:io';
+// ignore_for_file: unused_import, unnecessary_import, unused_field
 
+import 'dart:io';
+import 'dart:async';
+import 'package:dio/dio.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:newskproject/home.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 class showAds extends StatefulWidget {
   const showAds({super.key});
@@ -14,18 +19,85 @@ class showAds extends StatefulWidget {
 }
 
 class _showAdsState extends State<showAds> {
+  late DatabaseReference _dbref;
   var skip = 5;
-  bool op = true;
+  String imgAds = '';
 
   @override
   void initState() {
     super.initState();
+    GetAds();
 
-    ads();
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(children: [
+        Container(
+            height: double.infinity,
+            width: double.infinity,
+            child: Shimmer.fromColors(
+              baseColor: Color.fromARGB(255, 197, 197, 197),
+              highlightColor: Color.fromARGB(255, 248, 248, 248),
+              child: GestureDetector(
+                child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Color(0xffCC941F)),
+                ),
+              ),
+            )),
+        Container(
+          height: double.infinity,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image:
+                  // AssetImage('assets/b.png'),
+                  NetworkImage(imgAds),
+                  // Image.file(await getImageFileFromAssets('images/myImage.jpg')),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Stack(
+            children: [
+              Positioned(
+                top: 30,
+                right: 30,
+                child: ElevatedButton(
+                  child: Text(skip.toString() + " Skip",
+                      style: TextStyle(color: Colors.white, fontSize: 16)),
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.black),
+                  ),
+                  onPressed: () {
+                    skip = 0;
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ]),
+    );
+  }
+
+  void GetAds() {
+    _dbref = FirebaseDatabase.instance.reference().child("ads");
+    _dbref.child("img").once().then((DataSnapshot dataSnapshot) {
+      setState(() {
+        imgAds = dataSnapshot.value.toString();
+        ads();
+        // downloadFile(dataSnapshot.value.toString());
+      });
+    });
   }
 
   void ads() async {
-    // await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 3));
     while (skip > 0) {
       setState(() {
         skip--;
@@ -33,48 +105,29 @@ class _showAdsState extends State<showAds> {
       await Future.delayed(const Duration(seconds: 1));
     }
 
-    if (op) {
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => Home()),
-        (Route<dynamic> route) => false,
-      );
-    }
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => Home()),
+      (Route<dynamic> route) => false,
+    );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/b.png'),
-            // NetworkImage('https://cdn.wallpapersafari.com/21/83/p7NJPD.jpg'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Stack(
-          children: [
-            Positioned(
-              top: 30,
-              right: 30,
-              child: ElevatedButton(
-                child: Text(skip.toString() + " Skip",
-                    style: TextStyle(color: Colors.white, fontSize: 16)),
-                style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.black),
-                ),
-                onPressed: () {
-                  skip = 0;
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+  Future downloadFile(String urls) async {
+    final tempDir = await getTemporaryDirectory();
+    final path = tempDir.path + "/a.png";
+    await Dio().download(urls, path);
+
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Done")));
+  }
+
+
+  Future<File> getImageFileFromAssets(String path) async {
+    final byteData = await rootBundle.load('assets/$path');
+
+    final file = File('${(await getTemporaryDirectory()).path}/$path');
+    await file.writeAsBytes(byteData.buffer
+        .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+
+    return file;
   }
 }

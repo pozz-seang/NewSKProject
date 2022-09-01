@@ -37,13 +37,12 @@ flutter:
   uses-material-design: true
   assets:
     - assets/customer.json
+    - assets/loading.mp4
     - assets/s_logo.png
     - assets/s_logo_bg.png
     - assets/s_logo_item.png
     - assets/a.png
     - assets/b.png
-    - assets/loading.mp4
-    - assets/a.gif
 
 
 flutter_icons:

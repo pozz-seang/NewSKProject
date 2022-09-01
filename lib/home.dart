@@ -27,6 +27,7 @@ class _HomeState extends State<Home> {
   List<Model> list = [];
   late VideoPlayerController _controller;
 
+
   @override
   void initState() {
     super.initState();

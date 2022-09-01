@@ -55,56 +55,61 @@ class _dataUserState extends State<dataUser> {
         ),
         backgroundColor: Color(0xffCC941F),
       ),
-      body: Column(children: <Widget>[
-        Flexible(
-          child: FirebaseAnimatedList(
-              padding: EdgeInsets.all(10),
-              query: _dbref,
-              shrinkWrap: false,
-              itemBuilder: (context, snapshot, animation, index) {
-                return GestureDetector(
-                  onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        backgroundColor: Color(0xffCC941F),
-                        content: buildText("Name : " +
-                            snapshot.value["name"].toString() +
-                            "\n" +
-                            "Amount : " +
-                            snapshot.value["value"].toString() +
-                            " ៛")));
-                  },
-                  child: Container(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ListTile(
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                            color: Color.fromARGB(255, 255, 255, 255),
+      body: RefreshIndicator(
+        onRefresh: () async {
+
+        },
+        child: Column(children: <Widget>[
+          Flexible(
+            child: FirebaseAnimatedList(
+                padding: EdgeInsets.all(10),
+                query: _dbref,
+                shrinkWrap: false,
+                itemBuilder: (context, snapshot, animation, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          backgroundColor: Color(0xffCC941F),
+                          content: buildText("Name : " +
+                              snapshot.value["name"].toString() +
+                              "\n" +
+                              "Amount : " +
+                              snapshot.value["value"].toString() +
+                              " ៛")));
+                    },
+                    child: Container(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                              color: Color.fromARGB(255, 255, 255, 255),
+                            ),
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        tileColor: Color(0xffCC941F),
-                        trailing: IconButton(
-                          icon: Icon(
-                            Icons.delete,
-                            color: Color.fromARGB(255, 255, 255, 255),
+                          tileColor: Color(0xffCC941F),
+                          trailing: IconButton(
+                            icon: Icon(
+                              Icons.delete,
+                              color: Color.fromARGB(255, 255, 255, 255),
+                            ),
+                            onPressed: () {
+                              _dbref.child(snapshot.key!).remove();
+                            },
                           ),
-                          onPressed: () {
-                            _dbref.child(snapshot.key!).remove();
-                          },
+                          title: buildText(
+                              "Name : " + snapshot.value["name"].toString()),
+                          subtitle: buildText("Amount : " +
+                              snapshot.value["value"].toString() +
+                              " ៛"),
                         ),
-                        title: buildText(
-                            "Name : " + snapshot.value["name"].toString()),
-                        subtitle: buildText("Amount : " +
-                            snapshot.value["value"].toString() +
-                            " ៛"),
                       ),
                     ),
-                  ),
-                );
-              }),
-        ),
-      ]),
+                  );
+                }),
+          ),
+        ]),
+      ),
     );
   }
 
@@ -146,24 +151,24 @@ class _dataUserState extends State<dataUser> {
   //   });
   // }
 
-  void readMap() {
-    _dbref.child("item").onValue.listen((event) {
-      Map data = event.snapshot.value;
-      data.forEach((key, value) {
-        setState(() {
-          newAge2 = data['item1'];
-          status = data['item2'];
-          _realdb_once();
-        });
-      });
-    });
-  }
+  // void readMap() {
+  //   _dbref.child("item").onValue.listen((event) {
+  //     Map data = event.snapshot.value;
+  //     data.forEach((key, value) {
+  //       setState(() {
+  //         newAge2 = data['item1'];
+  //         status = data['item2'];
+  //         _realdb_once();
+  //       });
+  //     });
+  //   });
+  // }
 
-  _realdb_once() {
-    _dbref.child("item").once().then((DataSnapshot dataSnapshot) {
-      setState(() {
-        databasejson = dataSnapshot.value.toString();
-      });
-    });
-  }
+  // _realdb_once() {
+  //   _dbref.child("item").once().then((DataSnapshot dataSnapshot) {
+  //     setState(() {
+  //       databasejson = dataSnapshot.value.toString();
+  //     });
+  //   });
+  // }
 }
