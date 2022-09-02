@@ -55,11 +55,7 @@ class _dataUserState extends State<dataUser> {
         ),
         backgroundColor: Color(0xffCC941F),
       ),
-      body: RefreshIndicator(
-        onRefresh: () async {
-
-        },
-        child: Column(children: <Widget>[
+      body: Column(children: <Widget>[
           Flexible(
             child: FirebaseAnimatedList(
                 padding: EdgeInsets.all(10),
@@ -109,7 +105,6 @@ class _dataUserState extends State<dataUser> {
                 }),
           ),
         ]),
-      ),
     );
   }
 

@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
             backwardsCompatibility: false, // 1
             systemOverlayStyle: SystemUiOverlayStyle.light),
       ),
-      home: LoadingScreen(),//LoadingScreen()
+      home: Home(), //LoadingScreen()
     );
   }
 }

@@ -23,27 +23,24 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  late DatabaseReference _dbref;
-  List<Model> list = [];
-  late VideoPlayerController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
-    _dbref = FirebaseDatabase.instance.reference().child("h");
-
-    readData();
-  }
+  int _currentIndex = 0;
+  List<Widget> body = [
+    HHome(),
+    Icon(Icons.menu),
+    Icon(Icons.person),
+  ];
+  List<String> title = [
+    "HOME",
+    'MENU',
+    "PROFILE",
+  ];
 
   @override
   Widget build(BuildContext context) {
     // Text(name), Text(value),
     return Scaffold(
       appBar: AppBar(
-        title: Text("HOME"),
+        title: Text(title[_currentIndex]),
         flexibleSpace: Image(
           image: AssetImage('assets/a.png'),
           fit: BoxFit.cover,
@@ -60,13 +57,82 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      body: Container(
-        child: RefreshIndicator(
-          onRefresh: () async {
-            readData();
+      body: Center(
+        child: body[_currentIndex],
+      ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('assets/a.png'), fit: BoxFit.fill),
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          selectedItemColor: Color.fromARGB(255, 204, 0, 0),
+          unselectedItemColor: Colors.white,
+          type: BottomNavigationBarType.fixed,
+          iconSize: 25,
+          selectedFontSize: 16,
+          unselectedFontSize: 14,
+          onTap: (int newIndex) {
+            setState(() {
+              _currentIndex = newIndex;
+            });
           },
+          items: [
+            BottomNavigationBarItem(
+              label: title[0],
+              icon: Icon(Icons.home),
+            ),
+            BottomNavigationBarItem(
+              label: title[1],
+              icon: Icon(Icons.menu),
+            ),
+            BottomNavigationBarItem(
+              label: title[2],
+              icon: Icon(Icons.person),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class HHome extends StatefulWidget {
+  const HHome({super.key});
+
+  @override
+  State<HHome> createState() => _HHomeState();
+}
+
+class _HHomeState extends State<HHome> {
+  late DatabaseReference _dbref;
+  List<Model> list = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+    //     overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
+    _dbref = FirebaseDatabase.instance.reference().child("h");
+
+    readData();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: RefreshIndicator(
+        onRefresh: () async {
+          readData();
+        },
+        child: Container(
           child: GridView.builder(
             padding: EdgeInsets.all(20),
+            physics: ScrollPhysics(),
             shrinkWrap: false,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
@@ -97,24 +163,17 @@ class _HomeState extends State<Home> {
               color: Color(0xffCC941F)),
           child: Column(children: [
             ClipRRect(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(15),
-                  topRight: Radius.circular(15),
-                ),
-                child: FadeInImage(
-                  width: double.infinity,
-                  height: 190,
-                  fit: BoxFit.cover,
-                  placeholder: AssetImage("assets/s_logo_item.png"),
-                  image: NetworkImage(value),
-                )
-                // Stack(children: [
-                //   Image.asset("assets/s_logo_item.png",
-                //       width: double.infinity, height: 190, fit: BoxFit.cover),
-                //   Image.network(value,
-                //       width: double.infinity, height: 190, fit: BoxFit.cover)
-                // ]),
-                ),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15),
+                topRight: Radius.circular(15),
+              ),
+              child: Stack(children: [
+                Image.asset("assets/s_logo_item.png",
+                    width: double.infinity, height: 190, fit: BoxFit.cover),
+                Image.network(value,
+                    width: double.infinity, height: 190, fit: BoxFit.cover)
+              ]),
+            ),
             Text(name,
                 style: TextStyle(
                     color: Colors.white,

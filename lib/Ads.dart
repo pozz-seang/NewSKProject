@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, unnecessary_import, unused_field, unused_element
+// ignore_for_file: unused_import, unnecessary_import, unused_field, unused_element, deprecated_member_use
 
 import 'dart:io';
 import 'dart:async';
@@ -23,6 +23,7 @@ class _showAdsState extends State<showAds> {
   late DatabaseReference _dbref;
   var skip = 5;
   String imgAds = '';
+  String urlAds = '';
 
   @override
   void initState() {
@@ -35,7 +36,7 @@ class _showAdsState extends State<showAds> {
     return Scaffold(
       body: InkWell(
         onTap: () {
-          _launchUrl("https://sehacker168.blogspot.com/");
+          _launchUrl(urlAds);
         },
         child: Stack(children: [
           Container(
@@ -57,11 +58,7 @@ class _showAdsState extends State<showAds> {
             width: double.infinity,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image:
-                    // AssetImage('assets/b.png'),
-                    NetworkImage(imgAds),
-                    
-                // Image.file(await getImageFileFromAssets('images/myImage.jpg')),
+                image: NetworkImage(imgAds),
                 fit: BoxFit.cover,
               ),
             ),
@@ -95,9 +92,14 @@ class _showAdsState extends State<showAds> {
     _dbref.child("img").once().then((DataSnapshot dataSnapshot) {
       setState(() {
         imgAds = dataSnapshot.value.toString();
-        ads();
       });
     });
+    _dbref.child("url").once().then((DataSnapshot dataSnapshot) {
+      setState(() {
+        urlAds = dataSnapshot.value.toString();
+      });
+    });
+    ads();
   }
 
   void ads() async {
