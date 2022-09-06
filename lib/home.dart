@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:newskproject/config/OpenNewScreenAnimation.dart';
+import 'package:newskproject/getLocation.dart';
 import 'package:newskproject/main.dart';
 import 'package:newskproject/Ads.dart';
 import 'package:newskproject/userList.dart';
@@ -26,13 +27,18 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;
   List<Widget> body = [
     HHome(),
-    Icon(Icons.menu),
+    getLocation(),
     Icon(Icons.person),
   ];
   List<String> title = [
     "HOME",
-    'MENU',
+    'Location',
     "PROFILE",
+  ];
+  List<Icon> icon = [
+    Icon(Icons.home),
+    Icon(Icons.location_on),
+    Icon(Icons.person),
   ];
 
   @override
@@ -41,6 +47,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: Text(title[_currentIndex]),
+        centerTitle: true,
         flexibleSpace: Image(
           image: AssetImage('assets/a.png'),
           fit: BoxFit.cover,
@@ -61,16 +68,12 @@ class _HomeState extends State<Home> {
         child: body[_currentIndex],
       ),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('assets/a.png'), fit: BoxFit.fill),
-        ),
         child: BottomNavigationBar(
           currentIndex: _currentIndex,
-          backgroundColor: Colors.transparent,
+          backgroundColor: Color(0xff0B0C28),
           elevation: 0,
-          selectedItemColor: Color.fromARGB(255, 204, 0, 0),
-          unselectedItemColor: Colors.white,
+          selectedItemColor: Color.fromARGB(255, 255, 255, 255),
+          unselectedItemColor: Color.fromARGB(255, 110, 110, 110),
           type: BottomNavigationBarType.fixed,
           iconSize: 25,
           selectedFontSize: 16,
@@ -83,15 +86,15 @@ class _HomeState extends State<Home> {
           items: [
             BottomNavigationBarItem(
               label: title[0],
-              icon: Icon(Icons.home),
+              icon: icon[0],
             ),
             BottomNavigationBarItem(
               label: title[1],
-              icon: Icon(Icons.menu),
+              icon: icon[1],
             ),
             BottomNavigationBarItem(
               label: title[2],
-              icon: Icon(Icons.person),
+              icon: icon[2],
             )
           ],
         ),
@@ -111,12 +114,24 @@ class _HHomeState extends State<HHome> {
   late DatabaseReference _dbref;
   List<Model> list = [];
 
+  String MAE = "";
+
+  void getMAE() {
+    int time = DateTime.now().hour;
+    if (5 <= time && 11 >= time) {
+      MAE = "Good Morning";
+    } else if (12 <= time && 16 >= time) {
+      MAE = "Good Afternoon";
+    } else {
+      MAE = "Good Evening";
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    getMAE();
 
-    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-    //     overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
     _dbref = FirebaseDatabase.instance.reference().child("h");
 
     readData();
@@ -126,29 +141,46 @@ class _HHomeState extends State<HHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: RefreshIndicator(
-        onRefresh: () async {
-          readData();
-        },
-        child: Container(
-          child: GridView.builder(
-            padding: EdgeInsets.all(20),
-            physics: ScrollPhysics(),
-            shrinkWrap: false,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 2,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              mainAxisExtent: 250,
-            ),
-            itemCount: list.length,
-            itemBuilder: (_, index) {
-              final item = list[index];
-              return UI(item.name, item.value, item.key, item.p);
-            },
-          ),
-        ),
-      ),
+          onRefresh: () async {
+            readData();
+          },
+          child: ListView(
+            children: [
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                padding: EdgeInsets.all(10),
+                child: Text(
+                  MAE + ", PSeang",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold
+                  ),
+                ),
+              ),
+              Container(
+                child: GridView.builder(
+                  padding: EdgeInsets.all(20),
+                  physics: ScrollPhysics(),
+                  shrinkWrap: true,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    mainAxisExtent: 250,
+                  ),
+                  itemCount: list.length,
+                  itemBuilder: (_, index) {
+                    final item = list[index];
+                    return UI(item.name, item.value, item.key, item.p);
+                  },
+                ),
+              ),
+            ],
+          )),
     );
   }
 

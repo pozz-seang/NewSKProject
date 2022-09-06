@@ -74,6 +74,8 @@ class addnote extends StatelessWidget {
           ],
         ),
       ),
+
+
     );
   }
 }
